@@ -25,10 +25,17 @@ get '/application.css' do
   sass :style
 end
 
-post '/api/player/login' do
+post '/api/player/join' do
   @event = Event.new :player    => params[:playerName],
                      :timestamp => Time.now,
-                     :message     => "#{params[:playerName]} logged in."
+                     :message     => "#{params[:playerName]} joined."
+  error 400 unless @event.save
+end
+
+post '/api/player/quit' do
+  @event = Event.new :player    => params[:playerName],
+                     :timestamp => Time.now,
+                     :message   => "#{params[:playerName]} quit."
   error 400 unless @event.save
 end
 

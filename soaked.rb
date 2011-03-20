@@ -2,6 +2,8 @@ require 'rubygems'
 require 'sinatra'
 require 'dm-core'
 require 'dm-migrations'
+require 'haml'
+require 'sass'
 
 DataMapper.setup(:default, "sqlite://#{Dir.pwd}/soaked.db")
 

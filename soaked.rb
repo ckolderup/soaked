@@ -1,9 +1,9 @@
 require 'rubygems'
 require 'sinatra'
-require 'dm-core'
-require 'dm-migrations'
+require 'data_mapper'
 require 'haml'
 require 'sass'
+require 'json'
 
 DataMapper.setup(:default, "sqlite://#{Dir.pwd}/soaked.db")
 
@@ -25,6 +25,12 @@ end
 get '/application.css' do
   headers 'Content-Type' => 'text/css; charset=utf-8'
   sass :style
+end
+
+get '/events/json' do
+  content_type :json
+  @events = Event.all :timestamp.gt => Time.at(params[:since]||0), :order => [:timestamp.asc]
+  @events.to_json
 end
 
 post '/api/player/join' do

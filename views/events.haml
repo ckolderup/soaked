@@ -1,7 +1,7 @@
-.events
-	.event
-		- @events.each do |event|
-			.message 
-				= event.message
-			.timestamp
-				= event.timestamp
+#events
+  - @events.each do |event|
+    .event
+      %span.message 
+        = event.message
+      %span.timestamp
+        = event.timestamp

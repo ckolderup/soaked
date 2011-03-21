@@ -29,7 +29,7 @@ end
 
 get '/events/json' do
   content_type :json
-  @events = Event.all :timestamp.gt => Time.at(params[:since]||0), :order => [:timestamp.asc]
+  @events = Event.all :timestamp.gt => Time.at(params[:since].to_i||0), :order => [:timestamp.asc]
   @events.to_json
 end
 

@@ -27,15 +27,27 @@ get '/application.css' do
   sass :style
 end
 
-get '/events/json' do
-  content_type :json 
-  @since = params[:since].nil? ? Time.at(0) : Time.at(params[:since].to_i)
-  @before = params[:before].nil? ? Time.now : Time.at(params[:before].to_i)
-  puts "since #{@since}, before #{@before}"
-  @events = Event.all :timestamp.gt => @since,
-                      :timestamp.lt => @before,
+get '/events/latest/json' do
+  content_type :json
+  @events = Event.all :timestamp.gt => Time.at(params[:since].to_i||0),
                       :limit => 10,
                       :order => [:timestamp.asc]
+  @events.to_json
+end
+
+get '/events/dig/json' do
+  content_type :json
+ 
+  @before 
+  if (!params[:before].nil?)
+    @before = Time.at(params[:before].to_i)
+  else 
+    @before = Time.now
+  end
+
+  @events = Event.all :timestamp.lt => @before,
+                      :limit => 10,
+                      :order => [:timestamp.desc]
   @events.to_json
 end
 

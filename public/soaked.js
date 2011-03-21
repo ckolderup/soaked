@@ -6,7 +6,7 @@ $(document).ready(function(){
     });
 
 function update() {
-  $.getJSON('/events/json?since='+Math.floor(since.getTime()/1000), function(data) {
+  $.getJSON('/events/latest/json?since='+Math.floor(since.getTime()/1000), function(data) {
       $(data).each(function() {
         $("<div>", {
           'class': 'event',
@@ -20,8 +20,8 @@ function update() {
 function loadMore() {
   var timestamp = new Date();
   timestamp.setISO8601(jQuery.trim($(".event .timestamp").last().text()));
-  $.getJSON('/events/json?before='+Math.floor(timestamp.getTime()/1000), function(data) {
-    $.each($(data).get().reverse(), function() {
+  $.getJSON('/events/dig/json?before='+Math.floor(timestamp.getTime()/1000), function(data) {
+    $(data).each(function() {
       $("<div>", {
         'class': 'event',
         html: this.message + ' <span class="timestamp">' + this.timestamp + '</span>'

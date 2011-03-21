@@ -28,8 +28,14 @@ get '/application.css' do
 end
 
 get '/events/json' do
-  content_type :json
-  @events = Event.all :timestamp.gt => Time.at(params[:since].to_i||0), :order => [:timestamp.asc]
+  content_type :json 
+  @since = params[:since].nil? ? Time.at(0) : Time.at(params[:since].to_i)
+  @before = params[:before].nil? ? Time.now : Time.at(params[:before].to_i)
+  puts "since #{@since}, before #{@before}"
+  @events = Event.all :timestamp.gt => @since,
+                      :timestamp.lt => @before,
+                      :limit => 10,
+                      :order => [:timestamp.asc]
   @events.to_json
 end
 

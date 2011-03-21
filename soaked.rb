@@ -5,7 +5,7 @@ require 'haml'
 require 'sass'
 require 'json'
 
-DataMapper.setup(:default, "sqlite://#{Dir.pwd}/soaked.db")
+DataMapper.setup(:default, ENV['DATABASE_URL'] || "sqlite://#{Dir.pwd}/soaked.db")
 
 class Event
   include DataMapper::Resource
